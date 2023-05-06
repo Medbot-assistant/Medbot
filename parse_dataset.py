@@ -1,5 +1,6 @@
 import os
 from lxml import etree
+import pandas as pd
 
 # Function to parse an XML file and return the etree object
 def parse_xml_file(file_path):
@@ -31,6 +32,15 @@ class Document:
         self.focus = focus
         self.umls = umls
         self.qa_pairs = qa_pairs
+
+    def to_dataframe(self):
+        pairs = [(qa.question.text, qa.answer.text) for qa in self.qa_pairs]
+        df = pd.DataFrame(pairs, columns=['question', 'answer'])
+        df['id'] = self.id
+        df['source'] = self.source
+        df['url'] = self.url
+        df['focus'] = self.focus
+        return df
 
 class UMLS:
     def __init__(self, cuis, semantic_types, semantic_group):
@@ -88,7 +98,7 @@ def parse_document(xml_tree):
 
     return Document(id, source, url, focus, None, qa_pairs)
 
-import pandas as pd
+
 
 # Function to convert a Document object to a dictionary
 def document_to_dict(document):
@@ -104,9 +114,9 @@ def document_to_dict(document):
     }
 
 # Parse all XML trees and convert Document objects to dictionaries
-document_dicts = [document_to_dict(parse_document(xml_tree)) for xml_tree in xml_trees]
+document_dicts = [parse_document(xml_tree).to_dataframe() for xml_tree in xml_trees]
 
 # Create a pandas DataFrame from the list of dictionaries
-df = pd.DataFrame(document_dicts)
+df = pd.concat(document_dicts)
 
 df.to_csv('./dataset.tsv', sep="\t")
