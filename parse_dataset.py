@@ -65,11 +65,11 @@ def parse_document(xml_tree):
     except AttributeError:
         focus = None
 
-    umls_elem = root.find("FocusAnnotations/UMLS")
-    cuis = [cui.text for cui in umls_elem.findall("CUIs/CUI")]
-    semantic_types = [st.text for st in umls_elem.findall("SemanticTypes/SemanticType")]
-    semantic_group = umls_elem.find("SemanticGroup").text
-    umls = UMLS(cuis, semantic_types, semantic_group)
+    #umls_elem = root.find("FocusAnnotations/UMLS")
+    #cuis = [cui.text for cui in umls_elem.findall("CUIs/CUI")]
+    #semantic_types = [st.text for st in umls_elem.findall("SemanticTypes/SemanticType")]
+    #semantic_group = umls_elem.find("SemanticGroup").text
+    #umls = UMLS(cuis, semantic_types, semantic_group)
 
     qa_pairs = []
     for qa_pair_elem in root.findall("QAPairs/QAPair"):
@@ -86,7 +86,7 @@ def parse_document(xml_tree):
 
         qa_pairs.append(QAPair(pid, question, answer))
 
-    return Document(id, source, url, focus, umls, qa_pairs)
+    return Document(id, source, url, focus, None, qa_pairs)
 
 import pandas as pd
 
@@ -97,9 +97,9 @@ def document_to_dict(document):
         "source": document.source,
         "url": document.url,
         "focus": document.focus,
-        "umls_cuis": ','.join(document.umls.cuis),
-        "umls_semantic_types": ','.join(document.umls.semantic_types),
-        "umls_semantic_group": document.umls.semantic_group,
+  #      "umls_cuis": ','.join(document.umls.cuis),
+        #"umls_semantic_types": ','.join(document.umls.semantic_types),
+        #"umls_semantic_group": document.umls.semantic_group,
         "qa_pairs": document.qa_pairs,
     }
 
