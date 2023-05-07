@@ -4,6 +4,7 @@ from transformers import BloomTokenizerFast, BloomForCausalLM, TrainingArguments
 from datasets import load_dataset
 from utils import ModifiedTrainer, tokenise_data, data_collator
 from utils import ModelArguments, DataArguments
+import pandas as pd
 
 
 def main():
@@ -21,8 +22,13 @@ def main():
     model = BloomForCausalLM.from_pretrained(f"{model_name}").to(device)
 
     data_name = data_args.data_name_or_path
-    dataset = load_dataset(data_name)
-    input_ids = tokenise_data(dataset, tokeniser)
+    #dataset = load_dataset(data_name)
+    df = pd.read_csv("dataset.tsv", delimiter="\t")
+
+    data = df.to_dict("records")
+
+    #input_ids = tokenise_data(dataset, tokeniser)
+    input_ids = tokenise_data(data, tokeniser)
 
     model.gradient_checkpointing_enable()
     model.is_parallelizable = True
