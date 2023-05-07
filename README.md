@@ -29,3 +29,5 @@ python finetune-alpaca.py \
 - [x] Test bloom-1b7
 - [ ] Test bloom-7b1
 - [ ] Support Evaluation
+
+Source: https://github.com/hyintell/BLOOM-fine-tuning
