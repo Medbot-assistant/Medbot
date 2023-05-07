@@ -11,7 +11,7 @@ model_name = "bloom-1b7"
 model = BloomForCausalLM.from_pretrained(f"bigscience/{model_name}")
 tokeniser = BloomTokenizerFast.from_pretrained(f"bigscience/{model_name}", add_prefix_space=True)
 
-dataset = load_dataset('tatsu-lab/alpaca')
+dataset = load_dataset('dataset.tsv')
 input_ids = tokenise_data(dataset, tokeniser)
 
 model.gradient_checkpointing_enable()
