@@ -26,9 +26,11 @@ def main():
     df = pd.read_csv("dataset.tsv", delimiter="\t")
 
     data = df.to_dict("records")
+    print(data[1])
 
     #input_ids = tokenise_data(dataset, tokeniser)
     input_ids = tokenise_data(data, tokeniser)
+    #print(type(input_ids))
 
     model.gradient_checkpointing_enable()
     model.is_parallelizable = True

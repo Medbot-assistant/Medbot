@@ -19,7 +19,7 @@ def data_collator(features: list) -> dict:
     return {"input_ids": torch.stack([torch.LongTensor(f) for f in features])}
 
 
-def tokenise_data(dataset, tokenizer, max_seq_length=512):
+def tokenise_data_backup(dataset, tokenizer, max_seq_length=512):
     tokenised_list = []
     for elem in tqdm.tqdm(dataset["train"]):
         tokenised_list.append(
@@ -31,6 +31,49 @@ def tokenise_data(dataset, tokenizer, max_seq_length=512):
             )
         )
     return tokenised_list
+
+
+def tokenise_data_test(data, tokenizer, max_seq_length=512):
+    tokenised_list = []
+    for elem in tqdm.tqdm(data):
+        tokenised_list.append(
+            tokenizer.encode(
+                elem["text"],
+                max_length=max_seq_length,
+                padding="max_length",
+                truncation=True,
+            )
+        )
+    return tokenised_list
+
+def tokenise_data_test_1(data, tokenizer, max_seq_length=512):
+    tokenised_list = []
+    for elem in tqdm.tqdm(data):
+        input_text = elem["question"] + " " + elem["answer"]
+        tokenised_list.append(
+            tokenizer.encode(
+                input_text,
+                max_length=max_seq_length,
+                padding="max_length",
+                truncation=True,
+            )
+        )
+    return tokenised_list
+
+def tokenise_data(data, tokenizer, max_seq_length=512):
+    tokenised_list = []
+    for elem in tqdm.tqdm(data):
+        input_text = str(elem["question"]) + " " + str(elem["answer"])
+        tokenised_list.append(
+            tokenizer.encode(
+                input_text,
+                max_length=max_seq_length,
+                padding="max_length",
+                truncation=True,
+            )
+        )
+    return tokenised_list
+
 
 
 @dataclass
