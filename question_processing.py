@@ -44,7 +44,7 @@ class TextDocument:
         self.metadata = metadata if metadata is not None else {}
         self.metadata['id'] = id
 
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "key"
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hg_key"
 
 data_frame = pd.read_csv("dataset.tsv", sep="\t", nrows=1000)
 data = data_frame.to_dict(orient="records")
